@@ -1,24 +1,3 @@
-//TO USE JUST IMPORT THIS LINE
-//import consoLe, { log, warn, error,consoleSettings } from './utils/console.logger';
-//MAKE SURE YOU INSTALL npm install caller-path
-
-//USAGE
-// Just like normal console.log() with a slight different syntax.
-// Use Uppercase-Letter L and two parentheses ()() --> consoLe(log)(YOUR VARIABEL)
-// --> consoLe(log)("YOUR LOG")
-
-//consoLe(LOGTYPE,OPTIONS?,TOPIC?)(TEXT TO LOG)
-
-//LOGTYPE -> log, warn, _error, _err
-//OPTIONS -->
-// {
-//     FileName: true | false | string --> display FileName or display Custom String
-//     Path: true | false | string --> same as FileName
-//     dateTime: true | false -- > display Date
-//     Time: true|false --> display Time
-
-// }
-
 import path from 'path';
 import fs from 'fs';
 const callerPath = require('caller-path');
@@ -124,6 +103,10 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
     const CallerFunction =
       options?.CallerFunction !== undefined ? options.CallerFunction : true;
 
+    //DETECT PATH
+    const stackTrace = new Error().stack;
+    let callerName = stackTrace?.replace(/^Error\s+/, '');
+
     //Compute values
     let computedFileName;
     let computedPathName;
@@ -134,10 +117,18 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
 
     switch (getType(FileName)) {
       case true:
-        const callerPathString = callerPath().split('\\');
-        computedFileName = callerPathString[callerPathString.length - 1];
-        if (computedFileName.includes('/')) {
+        if (callerName) {
+          let _FILE_ROW = callerName.split('\n')[2];
+          let _FILE_NAME = _FILE_ROW.split('\\');
+          const index = _FILE_NAME.length - 1;
+          let DESTINATION = _FILE_NAME[index].replace(/\)/g, '');
+          DESTINATION = DESTINATION.replace(/:/, ' at ');
+          DESTINATION = DESTINATION.trim();
+          computedFileName = DESTINATION;
+        }
+        if (computedFileName?.includes('/')) {
           computedFileName = 'Internal process';
+          break;
         }
         break;
       case false:
@@ -197,23 +188,21 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
         computedCallerName = CallerFunction;
         break;
       case true:
-        const stackTrace = new Error().stack;
-        let callerName = stackTrace?.replace(/^Error\s+/, '');
-        callerName = callerName?.split('\n')[2]; // 1st item is this, 2nd item is caller
-        callerName = callerName?.replace(/^\s+at Object./, '');
-        callerName = callerName?.replace(/ \(.+\)$/, '');
-        callerName = callerName?.replace(/\@.+/, '');
-        callerName = callerName?.replace(/at/g, '');
-        callerName = callerName?.trim();
-        if (callerName?.includes('anonymous')) {
+        let _FUNCTION_NAME = callerName?.split('\n')[2]; // 1st item is this, 2nd item is caller
+        _FUNCTION_NAME = _FUNCTION_NAME?.replace(/^\s+at Object./, '');
+        _FUNCTION_NAME = _FUNCTION_NAME?.replace(/ \(.+\)$/, '');
+        _FUNCTION_NAME = _FUNCTION_NAME?.replace(/\@.+/, '');
+        _FUNCTION_NAME = _FUNCTION_NAME?.replace(/at/g, '');
+        _FUNCTION_NAME = _FUNCTION_NAME?.trim();
+        if (_FUNCTION_NAME?.includes('anonymous')) {
           computedCallerName = 'ROOT-FILE';
-        } else if (callerName?.includes('\\')) {
-          let detectFile = callerName.split('\\');
-          callerName = detectFile[detectFile.length - 1];
-          callerName = `Function not found in ${callerName}`;
-          computedCallerName = callerName;
+        } else if (_FUNCTION_NAME?.includes('\\')) {
+          let detectFile = _FUNCTION_NAME.split('\\');
+          _FUNCTION_NAME = detectFile[detectFile.length - 1];
+          _FUNCTION_NAME = `Function not found in ${_FUNCTION_NAME}`;
+          computedCallerName = _FUNCTION_NAME;
         } else {
-          computedCallerName = callerName + '()';
+          computedCallerName = _FUNCTION_NAME + '()';
         }
         break;
       case undefined:

@@ -9,7 +9,7 @@ advanced console.logger with more details, options etc... uses currying
 
 ## prepare
 1. <code>npm install caller-path</code>
-2. place the console.logger.ts where you want
+2. place the console.logger.ts/js where you want
 
 ## import TS
 ```
@@ -18,7 +18,7 @@ import logger,{log} from "YOUR PATH TO FILE"
 
 ## import JS
 ```
-const Logger = require('./console.logger'); /n
+const Logger = require('./console.logger');
 const { logger, log } = Logger;
 ```
 
@@ -29,14 +29,14 @@ const { logger, log } = Logger;
 ## basic ouput
 ```
     2021-03-26 | 12:12:39 |
-    File: App.ts *- | CallerFunction: ROOT-FILE *- |
+    File: App.ts at 35:9 *- | CallerFunction: ROOT-FILE *- |
     ------------------------
      YOUR LOG GOES HERE
     ++
 ```
 ```
     2021-03-26 | 12:12:39 |
-    File: anotherFile.ts *- | CallerFunction: testFunction() *- |
+    File: anotherFile.ts at 7:18 *- | CallerFunction: testFunction() *- |
     ------------------------
      YOUR LOG GOES HERE
     ++

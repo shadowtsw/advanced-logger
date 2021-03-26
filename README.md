@@ -5,6 +5,7 @@ advanced console.logger with more details, options etc... uses currying
 - Typescript-Project
 - Enviroment "development" (process.env.NODE_ENV = "development")
 - compile to at least es6
+- "strict mode" for correct path-detection
 
 ## prepare
 1. <code>npm install caller-path</code>

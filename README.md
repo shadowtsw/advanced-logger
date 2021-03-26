@@ -66,7 +66,7 @@ _err // uses console.error
 _error // when settings.error is true, this will throw an error
 browser // can be used to display logs within browser
 ```
-<h3>example usage</h3>
+### example usage
 ```
 logger(log)("YOUR LOG GOES HERE") // -> equals console.log("YOUR LOG GOES HERE")
 logger(warn)("YOUR LOG GOES HERE") // -> equals console.warn("YOUR LOG GOES HERE")
@@ -77,7 +77,7 @@ There are two types of options:
 1. Global options, which affects all logs
 2. Inline options, which overrides the global settings for a specific log
 
-<h2>Available options incl. default value</h2>
+### Available options incl. default value
 ```
 {
     FileName: true, // displays filename

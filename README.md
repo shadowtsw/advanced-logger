@@ -1,7 +1,7 @@
-# typescript-logger
+# advanced Javascript|Typescript-logger
 advanced console.logger with more details, options etc... uses currying
 
-## requirements
+## requirements Typescript
 - Typescript-Project
 - Enviroment "development" (process.env.NODE_ENV = "development")
 - compile to at least es6
@@ -11,8 +11,16 @@ advanced console.logger with more details, options etc... uses currying
 1. <code>npm install caller-path</code>
 2. place the console.logger.ts where you want
 
-## import
-<code>import logger,{log} from "YOUR PATH TO FILE"</code>
+## import TS
+```
+import logger,{log} from "YOUR PATH TO FILE"
+```
+
+## import JS
+```
+const Logger = require('./console.logger'); /n
+const { logger, log } = Logger;
+```
 
 ## basic usage
 1. <code>logger()("YOUR LOG GOES HERE") // -> equals console.log("YOUR LOG GOES HERE")</code>

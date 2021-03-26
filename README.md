@@ -67,8 +67,10 @@ _error // when settings.error is true, this will throw an error
 browser // can be used to display logs within browser
 ```
 <h3>example usage</h3>
-<code>logger(log)("YOUR LOG GOES HERE") // -> equals console.log("YOUR LOG GOES HERE")</code>
-<code>logger(warn)("YOUR LOG GOES HERE") // -> equals console.warn("YOUR LOG GOES HERE")</code>
+```
+logger(log)("YOUR LOG GOES HERE") // -> equals console.log("YOUR LOG GOES HERE")
+logger(warn)("YOUR LOG GOES HERE") // -> equals console.warn("YOUR LOG GOES HERE")
+```
 
 ## options
 There are two types of options:

@@ -7,13 +7,15 @@ advanced console.logger with more details, options etc... uses currying
 - at least es6
 
 ## prepare
-1. npm install caller-path
+1. <code>npm install caller-path</code>
 2. place the console.logger.ts where you want
 
 ## import
 import logger,{log} from "YOUR PATH TO FILE"
 
 ## basic usage
-1. logger()(YOUR LOG GOES HERE) -> equals console.log(YOUR LOG GOES HERE)
-2. logger(log)(YOUR LOG GOES HERE) -> equals console.log(YOUR LOG GOES HERE)
+1. <code>logger()("YOUR LOG GOES HERE") // -> equals console.log(YOUR LOG GOES HERE)</code>
+2. <code>logger(log)(YOUR LOG GOES HERE) // -> equals console.log(YOUR LOG GOES HERE)</code>
+
+
 

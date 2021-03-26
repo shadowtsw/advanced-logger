@@ -4,7 +4,7 @@ advanced console.logger with more details, options etc... uses currying
 ## requirements
 - Typescript-Project
 - Enviroment "development" (process.env.NODE_ENV = "development")
-- at least es6
+- compile to at least es6
 
 ## prepare
 1. <code>npm install caller-path</code>

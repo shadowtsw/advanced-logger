@@ -175,12 +175,13 @@ logArray(arrayToLog);
 <--
 
 ```
-
+### output depends on types for normal logs
 ```
 import logger, { log,iterate } from './utils/console.logger';
 
 const iterLogger = logger(iterate, {}, 'Iterate log');
-const usualLogger = logger(log, {}, 'Usual log');
+const usualLogger = logger(log, {}, 'Misc types log');
+const primitiveLogger = logger(log, {}, 'Primitives only');
 
 const object = { key: 'value', anotherKey: 'anotherValue' };
 const string = 'John Doe';
@@ -189,20 +190,21 @@ const numTwo = 2;
 
 usualLogger(object, numTwo, string, numOne);
 iterLogger(object, numTwo, string, numOne);
+primitiveLogger('test', 'another test', 'last test');
 
 //OUTPUT
 -->
-    2021-03-27 | 20:07:32 |
-    File: App.ts at 44:1 *- | CallerFunction: ROOT-FILE *- |
+    2021-03-27 | 20:21:32 |
+    File: App.ts at 45:1 *- | CallerFunction: ROOT-FILE *- |
     ------------------------
-Usual log: { key: 'value', anotherKey: 'anotherValue' }
-Usual log: 2
-Usual log: John Doe
-Usual log: 1
+Misc types log[0]: { key: 'value', anotherKey: 'anotherValue' }
+Misc types log[1]: 2
+Misc types log[2]: John Doe
+Misc types log[3]: 1
 <--
 -->
-    2021-03-27 | 20:07:32 |
-    File: App.ts at 45:1 *- | CallerFunction: ROOT-FILE *- |
+    2021-03-27 | 20:21:32 |
+    File: App.ts at 46:1 *- | CallerFunction: ROOT-FILE *- |
     ------------------------
     Iterate log:
 ┌────────────┬────────────────┐
@@ -214,6 +216,13 @@ Usual log: 1
 2
 John Doe
 1
+
+<--
+-->
+    2021-03-27 | 20:21:32 |
+    File: App.ts at 47:1 *- | CallerFunction: ROOT-FILE *- |
+    ------------------------
+    Primitives only: test,another test,last test
 
 <--
 

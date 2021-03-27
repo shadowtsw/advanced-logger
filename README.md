@@ -24,23 +24,25 @@ const { logger, log } = Logger;
 ```
 
 ## basic usage
-1. <code>logger()("YOUR LOG GOES HERE") // -> equals console.log("YOUR LOG GOES HERE")</code>
-2. <code>logger(log)("YOUR LOG GOES HERE") // -> equals console.log("YOUR LOG GOES HERE")</code>
+1. <code>logger()("YOUR LOG GOES HERE")     // -> equals console.log("YOUR LOG GOES HERE")</code>
+2. <code>logger(log)("YOUR LOG GOES HERE")  // -> equals console.log("YOUR LOG GOES HERE")</code>
 
 ## basic ouput
 ```
+    -->
     2021-03-26 | 12:12:39 |
     File: App.ts at 35:9 *- | CallerFunction: ROOT-FILE *- |
     ------------------------
      YOUR LOG GOES HERE
-    ++
+<--
 ```
 ```
+    -->
     2021-03-26 | 12:12:39 |
     File: anotherFile.ts at 7:18 *- | CallerFunction: testFunction() *- |
     ------------------------
      YOUR LOG GOES HERE
-    ++
+<--
 ```
 
 ## topic

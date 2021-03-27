@@ -116,13 +116,34 @@ Since its a curried function, you can also do the following examples for easier 
 ```
 import logger,{log,_error,iterate} from "YOUR PATH TO FILE"
 
-const thrErr = logger(_error,{Path:true},"MyError-Topic");
+const thrError = logger(_error,{Path:true},"MyError-Topic");
 
-function errorTest = () =>{
+function errorTest(){
     if(true){
         thrError("No valid Input !")
+    } else {
+        logger()("Do nothing")
     }
 }
+
+//OUTPUT
+Error: -->
+    2021-03-27 | 19:53:37 |
+    Path: I:\Javascript\6-GIT-Projekte\creditor *- | File: App.ts at 40:5 *- | CallerFunction: errorTest() *- |
+    ------------------------
+    MyError-Topic: No valid Input !
+    
+    at I:\Javascript\6-GIT-Projekte\creditor\utils\console.logger.ts:276:13
+    at errorTest (I:\Javascript\6-GIT-Projekte\creditor\App.ts:40:5)
+    at Object.<anonymous> (I:\Javascript\6-GIT-Projekte\creditor\App.ts:45:1)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Module.m._compile (I:\Javascript\6-GIT-Projekte\creditor\node_modules\ts-node\src\index.ts:1056:23)
+    at Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Object.require.extensions.<computed> [as .ts] (I:\Javascript\6-GIT-Projekte\creditor\node_modules\ts-node\src\index.ts:1059:12)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)
+<--
 
 ```
 
@@ -134,6 +155,22 @@ const logArray = logger(iterate,{},"Array-Table");
 const arrayToLog = ["Peter","Michael","John"];
 
 logArray(arrayToLog);
+
+//OUTPUT
+-->
+    2021-03-27 | 19:55:46 |
+    File: App.ts at 40:1 *- | CallerFunction: ROOT-FILE *- |
+    ------------------------
+    Array-Table:
+┌─────────┬───────────┐
+│ (index) │  Values   │
+├─────────┼───────────┤
+│    0    │  'Peter'  │
+│    1    │ 'Michael' │
+│    2    │  'John'   │
+└─────────┴───────────┘
+
+<--
 
 ```
 

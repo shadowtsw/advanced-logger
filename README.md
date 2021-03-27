@@ -118,13 +118,15 @@ import logger,{log,_error,iterate} from "YOUR PATH TO FILE"
 
 const thrError = logger(_error,{Path:true},"MyError-Topic");
 
-function errorTest(){
-    if(true){
+function errorTest(arg){
+    if(arg){
         thrError("No valid Input !")
     } else {
         logger()("Do nothing")
     }
 }
+
+errorTest(true)
 
 //OUTPUT
 Error: -->
@@ -169,6 +171,47 @@ logArray(arrayToLog);
 │    1    │ 'Michael' │
 │    2    │  'John'   │
 └─────────┴───────────┘
+
+<--
+
+```
+
+```
+const iterLogger = logger(iterate, {}, 'Iterate log');
+const usualLogger = logger(log, {}, 'Usual log');
+
+const object = { key: 'value', anotherKey: 'anotherValue' };
+const string = 'John Doe';
+const numOne = 1;
+const numTwo = 2;
+
+usualLogger(object, numTwo, string, numOne);
+iterLogger(object, numTwo, string, numOne);
+
+//OUTPUT
+-->
+    2021-03-27 | 20:07:32 |
+    File: App.ts at 44:1 *- | CallerFunction: ROOT-FILE *- |
+    ------------------------
+Usual log: { key: 'value', anotherKey: 'anotherValue' }
+Usual log: 2
+Usual log: John Doe
+Usual log: 1
+<--
+-->
+    2021-03-27 | 20:07:32 |
+    File: App.ts at 45:1 *- | CallerFunction: ROOT-FILE *- |
+    ------------------------
+    Iterate log:
+┌────────────┬────────────────┐
+│  (index)   │     Values     │
+├────────────┼────────────────┤
+│    key     │    'value'     │
+│ anotherKey │ 'anotherValue' │
+└────────────┴────────────────┘
+2
+John Doe
+1
 
 <--
 

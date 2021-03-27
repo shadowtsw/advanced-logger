@@ -227,6 +227,47 @@ John Doe
 <--
 
 ```
+### output without topic
+```
+const iterLogger = logger(iterate, {});
+const usualLogger = logger(log, {});
+const primitiveLogger = logger(log, {});
+
+//OUTPUT WITHOUT SPECIFIED TOPIC
+-->
+    2021-03-27 | 20:24:47 |
+    File: App.ts at 45:1 *- | CallerFunction: ROOT-FILE *- |
+    ------------------------
+ { key: 'value', anotherKey: 'anotherValue' }
+ 2
+ John Doe
+ 1
+<--
+-->
+    2021-03-27 | 20:24:47 |
+    File: App.ts at 46:1 *- | CallerFunction: ROOT-FILE *- |
+    ------------------------
+
+┌────────────┬────────────────┐
+│  (index)   │     Values     │
+├────────────┼────────────────┤
+│    key     │    'value'     │
+│ anotherKey │ 'anotherValue' │
+└────────────┴────────────────┘
+2
+John Doe
+1
+
+<--
+-->
+    2021-03-27 | 20:24:47 |
+    File: App.ts at 47:1 *- | CallerFunction: ROOT-FILE *- |
+    ------------------------
+     test,another test,last test
+
+<--
+
+```
 
 
 

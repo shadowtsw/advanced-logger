@@ -60,10 +60,11 @@ But there are some modifications, which can be used:
 import logger,{log,warn,_err,_error,browser} from "YOUR PATH TO FILE"
 ```
 ```
-log //as default, this can also be omitted -> uses console.log
-warn // uses console.warn
-_err // uses console.error
-_error // when settings.error is true, this will throw an error
+log     //as default, this can also be omitted -> uses console.log
+warn    // uses console.warn
+iterate // displays primitives line by line, objects and arrays as table
+_err    // uses console.error
+_error  // when settings.error is true, this will throw an error
 browser // can be used to display logs within browser
 ```
 ### example usage
@@ -71,6 +72,8 @@ browser // can be used to display logs within browser
 logger(log)("YOUR LOG GOES HERE") // -> equals console.log("YOUR LOG GOES HERE")
 logger(warn)("YOUR LOG GOES HERE") // -> equals console.warn("YOUR LOG GOES HERE")
 ```
+## structure of logger
+<code>customName(consoleParameter,{options},topic)(thingsToLog)</code>
 
 ## options
 There are two types of options:
@@ -80,16 +83,57 @@ There are two types of options:
 ### Available options incl. default value
 ```
 {
-    FileName: true, // displays filename
-    Path: false, // displays path to file
-    error: true, // when true, allows to throw errors
+    FileName: true,     // displays filename
+    Path: false,        // displays path to file
+    error: true,        // when true, allows to throw errors
     FunctionName: null, // not available yet
-    Seperator: '*- |', // string to seperate log info´s
-    dateTime: true, // displays date
-    Time: true, // displays time
-    DevOnly: true, // when true, all logs are only appear in development-mode
+    Seperator: '*- |',  // string to seperate log info´s
+    dateTime: true,     // displays date
+    Time: true,         // displays time
+    DevOnly: true,      // when true, all logs are only appear in development-mode
 }
 ```
+
+## use of global and inline options
+```
+import logger,{log, consoleSettings} from "YOUR PATH TO FILE"
+
+//get global settings
+consoleSettings.get("PROPERTYNAME");
+
+//set global settings
+consoleSettings.set("PROPERTYNAME",value)
+
+//use inline settings -> keep in mind that this will override global settings for this specific logger
+logger(log,{Path:true})("YOUR LOG GOES HERE")
+
+```
+## use of currying and curried options
+Since its a curried function, you can also do the following examples for easier handling:
+```
+import logger,{log,_error,iterate} from "YOUR PATH TO FILE"
+
+const thrErr = logger(_error,{Path:true},"MyError-Topic");
+
+function errorTest = () =>{
+    if(true){
+        thrError("No valid Input !")
+    }
+}
+
+```
+
+```
+import logger,{log,_error,iterate} from "YOUR PATH TO FILE"
+
+const logArray = logger(iterate,{},"Array-Table");
+
+const arrayToLog = ["Peter","Michael","John"];
+
+logArray(arrayToLog);
+
+```
+
 
 
 

@@ -177,6 +177,8 @@ logArray(arrayToLog);
 ```
 
 ```
+import logger, { log,iterate } from './utils/console.logger';
+
 const iterLogger = logger(iterate, {}, 'Iterate log');
 const usualLogger = logger(log, {}, 'Usual log');
 

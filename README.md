@@ -48,11 +48,12 @@ const { logger, log } = Logger;
 ## topic
 <code>logger(log,{},"MYTOPIC")("LOG MESSAGE")</code>
 ```
+    -->
     2021-03-26 | 12:12:39 |
     File: anotherFile.ts at 7:18 *- | CallerFunction: testFunction() *- |
     ------------------------
      MYTOPIC: LOG MESSAGE
-    ++
+<--
 ```
 
 ## console parameters

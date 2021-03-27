@@ -255,11 +255,11 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
     ${computedPathName ? `Path: ${computedPathName} ${Seperator} ` : ``}${!computedFileName ? `` : `File: ${computedFileName} ${Seperator} `}${computedCallerName ? `CallerFunction: ${computedCallerName} ${Seperator}` : ``}`}
     ------------------------`)
 
-      for (let entry of textObject) {
+      for (let [index, entry] of textObject.entries()) {
         if (typeof entry !== 'object') {
-          callback(`${topic ? `${topic}:` : ''} ${entry}`);
+          callback(`${topic ? `${topic}[${index}]:` : ''} ${entry}`);
         } else {
-          callback(topic ? topic + ':' : '', entry);
+          callback(topic ? topic + '[' + index + ']' + ':' : '', entry);
         }
       }
       callback('<--');
@@ -270,7 +270,8 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
     ${computedDateTime ? `${computedDateTime} | ` : ``}${computedTime ? `${computedTime} | ` : ``}${`
     ${computedPathName ? `Path: ${computedPathName} ${Seperator} ` : ``}${!computedFileName ? `` : `File: ${computedFileName} ${Seperator} `}${computedCallerName ? `CallerFunction: ${computedCallerName} ${Seperator}` : ``}`}
     ------------------------
-    ${topic ? `${topic}:` : ""} ${text}`;
+    ${topic ? `${topic}:` : ""} ${text}
+    `;
 
     if (error && computedError && cb === 'error') {
       throw new Error(file);

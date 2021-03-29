@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 const callerPath = require('caller-path');
 
+//interface for main logger function
 interface Options {
   FileName?: string | boolean;
   Path?: string | boolean;
@@ -14,6 +15,7 @@ interface Options {
   CallerFunction?: boolean | string;
 }
 
+//allowed log-types
 type AllowedConsoleLogs =
   | typeof console.log
   | typeof console.warn
@@ -31,6 +33,7 @@ export const _error = 'error';
 export const browser = 'browser';
 export const iterate = 'iterate';
 
+//global Settings
 export class ConsoleSettings {
   protected constructor() {}
 
@@ -45,6 +48,7 @@ export class ConsoleSettings {
   static CallerFunction: boolean | string = true;
 }
 
+//document all loggers
 export class MasterLog {
   static LoggerList: Array<any> = [];
 
@@ -61,6 +65,7 @@ export class MasterLog {
   }
 }
 
+//testing purpose for addLogger
 MasterLog.addThisLogger('log', 'App.st', 'Play aroung');
 
 interface ComputedValues {
@@ -72,6 +77,7 @@ interface ComputedValues {
   computedError: string | null;
 }
 
+//log-template
 const fileTemplateTopic = (
   textObject: any,
   text?: Array<any>,
@@ -136,7 +142,7 @@ const checkArray = (textObject: Array<any>): boolean => {
   return checkForPrimitives;
 };
 
-//get types for switch cases
+//get types for switch cases/computing steps
 const getType = (arg: any) => {
   if (arg === null) {
     return false;
@@ -150,11 +156,36 @@ const getType = (arg: any) => {
   return typeof arg;
 };
 
+//generate file name
+const generateFileName = (callerName: string | undefined) => {
+  if (callerName) {
+    let _FILE_ROW = callerName.split('\n')[2];
+    let _FILE_NAME = _FILE_ROW.split('\\');
+    const index = _FILE_NAME.length - 1;
+    let DESTINATION = _FILE_NAME[index].replace(/\)/g, '');
+    DESTINATION = DESTINATION.replace(/:/, ' at ');
+    DESTINATION = DESTINATION.trim();
+    return DESTINATION;
+  }
+  return 'Error in generating FileName, please check !';
+};
+
+//generate function name
+const generateFunctionName = (callerName: string | undefined) => {
+  let _FUNCTION_NAME = callerName?.split('\n')[2];
+  _FUNCTION_NAME = _FUNCTION_NAME?.replace(/^\s+at Object./, '');
+  _FUNCTION_NAME = _FUNCTION_NAME?.replace(/ \(.+\)$/, '');
+  _FUNCTION_NAME = _FUNCTION_NAME?.replace(/\@.+/, '');
+  _FUNCTION_NAME = _FUNCTION_NAME?.replace(/at/g, '');
+  return _FUNCTION_NAME?.trim();
+};
+
 type MultiType = string | boolean | null;
 type TimeObject = Date | boolean | null;
 type TimeString = string | boolean | null;
 type StringValidator = string | boolean;
 
+// compute logger file-,path-,function-name properties
 const computingSteps = (
   FileName: StringValidator,
   callerName: string | undefined,
@@ -174,13 +205,7 @@ const computingSteps = (
   switch (getType(FileName)) {
     case true:
       if (callerName) {
-        let _FILE_ROW = callerName.split('\n')[2];
-        let _FILE_NAME = _FILE_ROW.split('\\');
-        const index = _FILE_NAME.length - 1;
-        let DESTINATION = _FILE_NAME[index].replace(/\)/g, '');
-        DESTINATION = DESTINATION.replace(/:/, ' at ');
-        DESTINATION = DESTINATION.trim();
-        computedFileName = DESTINATION;
+        computedFileName = generateFileName(callerName);
       }
       if (
         typeof computedFileName === 'string' &&
@@ -247,12 +272,7 @@ const computingSteps = (
       computedCallerName = CallerFunction;
       break;
     case true:
-      let _FUNCTION_NAME = callerName?.split('\n')[2]; // 1st item is this, 2nd item is caller
-      _FUNCTION_NAME = _FUNCTION_NAME?.replace(/^\s+at Object./, '');
-      _FUNCTION_NAME = _FUNCTION_NAME?.replace(/ \(.+\)$/, '');
-      _FUNCTION_NAME = _FUNCTION_NAME?.replace(/\@.+/, '');
-      _FUNCTION_NAME = _FUNCTION_NAME?.replace(/at/g, '');
-      _FUNCTION_NAME = _FUNCTION_NAME?.trim();
+      let _FUNCTION_NAME = generateFunctionName(callerName);
       if (_FUNCTION_NAME?.includes('anonymous')) {
         computedCallerName = 'ROOT-FILE';
       } else if (_FUNCTION_NAME?.includes('\\')) {
@@ -334,8 +354,29 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
       ? options.CallerFunction
       : ConsoleSettings.CallerFunction;
 
-  //Compute values
+  //identify logger-type for registering
+  const logType = (cb: AllowedConsoleLogs | undefined) => {
+    switch (cb) {
+      case console.log:
+        return 'log';
+      case console.warn:
+        return 'warn';
+      case console.error:
+        return 'error';
+      case Error:
+        return 'Error Object';
+      case 'browser':
+        return 'browser';
+      case 'error':
+        return 'error';
+      case 'iterate':
+        return 'iterate';
+      default:
+        return 'Type not found, please check !';
+    }
+  };
 
+  //Compute values
   const computedObject: ComputedValues = {
     computedFileName: '',
     computedPathName: '',
@@ -354,6 +395,7 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
     cb = console.log;
   }
 
+  //start generating Log´s
   if (process.env.NODE_ENV === 'development' && DevOnly) {
     if (cb !== 'browser' && cb !== 'iterate') {
       const computed = computingSteps(
@@ -376,6 +418,12 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
       const result = { ...computedObject, ...computed };
 
       let onlyPrimitives = checkArray(text);
+
+      MasterLog.addThisLogger(
+        logType(cb),
+        generateFileName(callerName),
+        generateFunctionName(callerName)
+      );
 
       if (error && result.computedError && cb === 'error') {
         throw new Error(fileTemplateTopic(result, text, topic));
@@ -407,6 +455,12 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
 
       const result = { ...computedObject, ...computed };
 
+      MasterLog.addThisLogger(
+        logType(cb),
+        generateFileName(callerName),
+        generateFunctionName(callerName)
+      );
+
       //prettier-ignore
       const file = `
         ${result.computedDateTime ? `${result.computedDateTime} | ` : ``}${result.computedTime ? `${result.computedTime} | ` : ``}
@@ -434,6 +488,12 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
 
       const result = { ...computedObject, ...computed };
 
+      MasterLog.addThisLogger(
+        logType(cb),
+        generateFileName(callerName),
+        generateFunctionName(callerName)
+      );
+
       //prettier-ignore
       console.log(fileTemplateTopic(
           result, [""], topic
@@ -449,6 +509,12 @@ const logger = (cb?: AllowedConsoleLogs, options?: Options, topic?: string) => (
     }
   } else {
     //Fires if production mode || DevOnly is false
+
+    MasterLog.addThisLogger(
+      logType(cb),
+      generateFileName(callerName),
+      generateFunctionName(callerName)
+    );
   }
 };
 

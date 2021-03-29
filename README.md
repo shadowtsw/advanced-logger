@@ -99,13 +99,13 @@ There are two types of options:
 
 ## use of global and inline options
 ```
-import logger,{log, consoleSettings} from "YOUR PATH TO FILE"
+import logger,{log, ConsoleSettings} from "YOUR PATH TO FILE"
 
 //get global settings
-consoleSettings.get("PROPERTYNAME");
+ConsoleSettings.<"PROPERTYNAME">;
 
 //set global settings
-consoleSettings.set("PROPERTYNAME",value)
+ConsoleSettings.<"PROPERTYNAME"> = value;
 
 //use inline settings -> keep in mind that this will override global settings for this specific logger
 logger(log,{Path:true})("YOUR LOG GOES HERE")
